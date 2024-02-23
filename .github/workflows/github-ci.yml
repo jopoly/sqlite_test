@@ -54,14 +54,14 @@ jobs:
 
     - name: Copy RPM Artifact
       run: |
-        mkdir -p $RPM_ARTIFACT_DIR
+        mkdir -p ${{ env.RPM_ARTIFACT_DIR}}
         docker run -d --name test $IMAGE_TAG /usr/sbin/init
-        docker cp test:/home/user1/rpmbuild/RPMS/x86_64 $RPM_ARTIFACT_DIR
+        docker cp test:/home/user1/rpmbuild/RPMS/x86_64 ${{ env.RPM_ARTIFACT_DIR}}
 
     - name: Move rpm files
       run: |
-        cp $RPM_ARTIFACT_DIR/x86_64/* $RPM_ARTIFACT_DIR
-        rm -rf $RPM_ARTIFACT_DIR/x86_64/
+        cp ${{ env.RPM_ARTIFACT_DIR}}/x86_64/* ${{ env.RPM_ARTIFACT_DIR }}
+        rm -rf ${{ env.RPM_ARTIFACT_DIR }}/x86_64/
 
     - name: Upload RPM Artifact
       uses: actions/upload-artifact@v2
@@ -97,6 +97,12 @@ jobs:
         release_name: Release ${{ env.SQLITE_RELEASE_VERSION }}
         draft: false
         prerelease: false
+
+    # Download rpm files from Artifact
+    - name: Download RPM Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.RPM_ARTIFACT_DIR }}
 
     # Upload rpm files to release that is created in previous step
     - name: Upload sqlite rpm
