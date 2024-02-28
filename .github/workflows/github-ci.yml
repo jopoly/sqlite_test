@@ -7,7 +7,7 @@ on:
 
 env:
   OWNER_GITHUB: "jopoly"                      # User name. For example: [user_name] in https://github.com/user_name/your_repository.git
-  PGSPIDER_PROJECT_GITHUB: "sqlite_test"     # Repository name. For example: [your_repository] in https://github.com/user_name/your_repository.git
+  PGSPIDER_PROJECT_GITHUB: "pgspider_test"     # Repository name. For example: [your_repository] in https://github.com/user_name/your_repository.git
   RPM_ARTIFACT_DIR: "fdw_rpm"                    # Directory name of Artifact to contain rpm files temporary. Default is "fdw_rpm".
   PGSPIDER_RELEASE_VERSION: "4.0.0"              # Release version. For example: 4.1.0.
   PGSPIDER_BASE_POSTGRESQL_VERSION: "16"         # Main version of postgresql that pgspider based on it. For example: 16.
