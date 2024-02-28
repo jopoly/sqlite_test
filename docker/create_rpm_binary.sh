@@ -1,11 +1,11 @@
 #!/bin/bash
 
-source env_rpmbuild.conf
+source docker/env_rpmbuild.conf
 set -eE
 
 # clone sqlite
-if [[ ! -f "deps/sqlite-autoconf-${SQLITE_VERSION}.tar.gz" ]]; then
-	cd deps
+if [[ ! -f "docker/deps/sqlite-autoconf-${SQLITE_VERSION}.tar.gz" ]]; then
+	cd docker/deps
 	chmod -R 777 ./
 	wget https://www.sqlite.org/2023/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 	cd ..
@@ -26,11 +26,11 @@ then
                  --build-arg PGSPIDER_BASE_POSTGRESQL_VERSION=${PGSPIDER_BASE_POSTGRESQL_VERSION} \
                  --build-arg PGSPIDER_RELEASE_VERSION=${PGSPIDER_RELEASE_VERSION} \
                  --build-arg PGSPIDER_RPM_ID=${PGSPIDER_RPM_ID_POSTFIX} \
-                 --build-arg PGSPIDER_PROJECT_ID=$PGSPIDER_PROJECT_ID \
+                 --build-arg PGSPIDER_RPM_URL="https://tccloud2.toshiba.co.jp/swc/gitlab/api/v4/projects/${PGSPIDER_PROJECT_ID}/packages/generic/rpm_${RPM_DISTRIBUTION_TYPE}/${PGSPIDER_BASE_POSTGRESQL_VERSION}" \
                  --build-arg SQLITE_FDW_RELEASE_VERSION=${SQLITE_FDW_RELEASE_VERSION} \
                  --build-arg SQLITE_VERSION=$SQLITE_VERSION \
                  --build-arg SQLITE_RELEASE_VERSION=$SQLITE_RELEASE_VERSION \
-                 -f $DOCKERFILE .
+                 -f docker/$DOCKERFILE .
 else
     docker build -t $IMAGE_TAG \
                  --build-arg proxy=${proxy} \
@@ -38,12 +38,11 @@ else
                  --build-arg DISTRIBUTION_TYPE=${RPM_DISTRIBUTION_TYPE} \
                  --build-arg PGSPIDER_BASE_POSTGRESQL_VERSION=${PGSPIDER_BASE_POSTGRESQL_VERSION} \
                  --build-arg PGSPIDER_RELEASE_VERSION=${PGSPIDER_RELEASE_VERSION} \
-                 --build-arg PGSPIDER_RPM_ID=${PGSPIDER_RPM_ID_POSTFIX} \
-                 --build-arg PGSPIDER_PROJECT_ID=$PGSPIDER_PROJECT_ID \
+                 --build-arg PGSPIDER_RPM_URL="https://github.com/${OWNER_GITHUB}/${PGSPIDER_PROJECT_GITHUB}/releases/download/${PGSPIDER_RELEASE_VERSION}" \
                  --build-arg SQLITE_FDW_RELEASE_VERSION=${SQLITE_FDW_RELEASE_VERSION} \
                  --build-arg SQLITE_VERSION=${SQLITE_VERSION} \
                  --build-arg SQLITE_RELEASE_VERSION=${SQLITE_RELEASE_VERSION} \
-                 -f $DOCKERFILE .
+                 -f docker/$DOCKERFILE .
 fi
 
 # copy binary to outside
@@ -80,6 +79,8 @@ else
                             -H \"Authorization: Bearer ${ACCESS_TOKEN}\" \
                             -H \"X-GitHub-Api-Version: 2022-11-28\" \
                             -H \"Content-Type: application/octet-stream\" \
+                            --retry 20 \
+                            --retry-max-time 120 \
                             --insecure"
     assets_uri="https://uploads.github.com/repos/${OWNER_GITHUB}/${SQLITE_FDW_PROJECT_GITHUB}/releases/${SQLITE_FDW_RELEASE_ID}/assets"
     binary_dir="--data-binary \"@${RPM_ARTIFACT_DIR}\""
