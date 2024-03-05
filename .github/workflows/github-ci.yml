@@ -1,9 +1,7 @@
 name: Create RPM Release
 
 on:
-  push:
-    branches:
-      - test
+  workflow_dispatch:
 
 env:
   OWNER_GITHUB: "jopoly"                      # User name. For example: [user_name] in https://github.com/user_name/your_repository.git
