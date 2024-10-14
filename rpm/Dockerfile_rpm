@@ -45,6 +45,8 @@ RUN if [[ -z ${ACCESS_TOKEN} ]]; then \
 # Download PostgreSQL/PGSpider libraries
 RUN if [[ -n ${POSTGRESQL_BASE_VERSION} && -n ${POSTGRESQL_VERSION} ]]; then \
         . /tmp/params.txt && \
+        echo "TEST" \
+        echo ${PARAM_CURL_OPTS} \
         eval curl ${PARAM_CURL_OPTS} \
             ${POSTGRESQL_RPM_URL}/postgresql${POSTGRESQL_BASE_VERSION}-libs-${POSTGRESQL_VERSION}PGDG.rhel8.x86_64.rpm \
             -o /root/postgresql${POSTGRESQL_BASE_VERSION}-libs-${POSTGRESQL_VERSION}PGDG.rhel8.x86_64.rpm ; \
