@@ -38,7 +38,7 @@ jobs:
     - name: Test
       run: |
         chmod +x rpm/convert_sqlite_download_version.sh
-        ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
+        sh ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
       shell: sh
 
     - name: Build RPM
