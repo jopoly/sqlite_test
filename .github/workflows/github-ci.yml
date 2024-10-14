@@ -37,7 +37,7 @@ jobs:
 
     - name: Build RPM
       run: |
-        chmod +x ./rpm/convert_sqlite_download_version.sh
+        chmod +x ${GITHUB_WORKSPACE}/rpm/convert_sqlite_download_version.sh
         pwd
         ls rpm/convert_sqlite_download_version.sh
         readlink -f rpm/convert_sqlite_download_version.sh
