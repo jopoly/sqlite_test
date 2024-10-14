@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 
 env:
+  ACCESS_TOKEN: "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"
   OWNER_GITHUB: "jopoly"                       # User name. For example: [user_name] in https://github.com/user_name/your_repository.git
   PGSPIDER_PROJECT_GITHUB: "pgspider"            # PGSpider repository name. For example: [your_repository] in https://github.com/user_name/your_repository.git
   ARTIFACT_DIR: "fdw_rpm"                        # Directory name of Artifact to contain rpm files temporary. Default is "fdw_rpm".
@@ -16,16 +17,6 @@ env:
   
 
 jobs:
-  test_job:
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v3
-    - name: Test
-      run: |
-        chmod +x rpm/convert_sqlite_download_version.sh
-        ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
-      shell: bash
-
   # Job1: Build rpm files and upload them to Artifact
   project_build:
     runs-on: ubuntu-20.04
@@ -59,6 +50,7 @@ jobs:
         patch -u sqlite_fdw.spec -i sqlite_fdw_spec_pgspider.patch
         cd ..
         docker build -t $IMAGE_TAG \
+          --build-arg PACKAGE_RELEASE_VERSION=${{ env.ACCESS_TOKEN }} \
           --build-arg PACKAGE_RELEASE_VERSION=${{ env.PACKAGE_RELEASE_VERSION }} \
           --build-arg PGSPIDER_RELEASE_VERSION=${{ env.PGSPIDER_RELEASE_VERSION }} \
           --build-arg PGSPIDER_BASE_POSTGRESQL_VERSION=${{ env.PGSPIDER_BASE_POSTGRESQL_VERSION }} \
