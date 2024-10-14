@@ -37,9 +37,9 @@ jobs:
 
     - name: Build RPM
       run: |
-        chmod a+x rpm/convert_sqlite_download_version.sh
+        chmod a+x ./rpm/convert_sqlite_download_version.sh
         pwd
-        ls rpm
+        ls rpm/convert_sqlite_download_version.sh
         ./rpm/convert_sqlite_download_version.sh
         SQLITE_DOWNLOAD_VERSION=$(./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION)
         cd rpm/deps && chmod -R 777 ./
