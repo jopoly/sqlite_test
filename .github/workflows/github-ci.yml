@@ -39,6 +39,7 @@ jobs:
       run: |
         chmod +x rpm/convert_sqlite_download_version.sh
         ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
+      shell: bash
 
     - name: Build RPM
       run: |
