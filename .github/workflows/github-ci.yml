@@ -44,6 +44,7 @@ jobs:
     - name: Before scripts
       run: |
         apk add wget
+        apk add bash
 
     - name: Build RPM
       run: |
@@ -66,7 +67,7 @@ jobs:
           --build-arg SQLITE_YEAR=$SQLITE_YEAR \
           --build-arg SQLITE_DOWNLOAD_VERSION=$SQLITE_DOWNLOAD_VERSION \
           -f rpm/$DOCKERFILE .
-      shell: bash
+        shell: bash
 
     - name: Copy RPM Artifact
       run: |
