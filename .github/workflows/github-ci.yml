@@ -40,12 +40,7 @@ jobs:
         chmod +x ${GITHUB_WORKSPACE}/rpm/convert_sqlite_download_version.sh
         chmod +x rpm/abc.sh
         sh rpm/abc.sh
-        pwd
-        ls rpm/convert_sqlite_download_version.sh
-        readlink -f rpm/convert_sqlite_download_version.sh
-        echo ${GITHUB_WORKSPACE}
-        ${GITHUB_WORKSPACE}/rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
-        SQLITE_DOWNLOAD_VERSION=$(./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION)
+        SQLITE_DOWNLOAD_VERSION=$(sh rpm/convert_sqlite_download_version.sh $SQLITE_VERSION)
         cd rpm/deps && chmod -R 777 ./
         wget https://www.sqlite.org/$SQLITE_YEAR/sqlite-autoconf-$SQLITE_DOWNLOAD_VERSION.tar.gz --no-check-certificate
         cd ..
