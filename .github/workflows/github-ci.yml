@@ -36,7 +36,7 @@ jobs:
         apk add wget
 
     - name: Test
-      run: bash ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
+      run: ./rpm/convert_sqlite_download_version.sh $SQLITE_VERSION
 
     - name: Build RPM
       run: |
